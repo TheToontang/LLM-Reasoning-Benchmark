@@ -2,6 +2,10 @@
 
 A small-scale experimental project evaluating the performance of a large language model on reasoning tasks, with a focus on **answer accuracy, robustness to question wording, and API response latency**.
 
+**Project Type:** Independent Research / Experimental Benchmarking
+
+**Research Area:** Large Language Models, Reasoning Evaluation, Prompt Robustness
+
 ## 1. Project Overview
 
 This project investigates how a language model performs across three types of reasoning problems:
@@ -42,6 +46,8 @@ The questions and reference answers are stored in `questions.csv`.
 ## 4. Experimental Method
 
 The benchmark was implemented in Python and executed through the Google Generative AI API.
+
+The evaluated model was `gemini-3.8-flash`.
 
 For each question, the system:
 
@@ -111,6 +117,8 @@ Constraint satisfaction questions showed higher average API latency than logical
 
 However, these differences are descriptive observations from a single experimental run. API response latency may reflect network conditions and service-side processing rather than reasoning difficulty alone.
 
+Because accuracy reached 100% across all categories and variants, this experiment cannot determine whether the evaluated model is more robust to certain types of question modification.
+
 ## 7. Limitations
 
 - The dataset contains only 15 unique reasoning problems.
@@ -119,6 +127,7 @@ However, these differences are descriptive observations from a single experiment
 - Only one language model was evaluated.
 - Each question variant was tested once.
 - API latency does not directly measure internal reasoning time.
+- The observed latency differences may be influenced by external API and network conditions.
 
 The results therefore describe performance on this specific benchmark rather than general reasoning ability.
 
@@ -131,19 +140,24 @@ Future improvements may include:
 - Repeating experiments to assess response variability.
 - Measuring consistency across different prompt formulations.
 - Investigating more detailed error patterns when incorrect answers occur.
+- Comparing performance against simple baseline methods.
 
 ## 9. Technologies Used
 
 - Python
-- Google Generative AI API
+- Google Generative AI API (`google-genai`)
+- Python dotenv (`python-dotenv`)
 - CSV
 - Matplotlib
+- Git and GitHub
 
 ## 10. Project Structure
 
 ```text
 LLM-Reasoning-Benchmark/
 ├── README.md
+├── requirements.txt
+├── .gitignore
 ├── questions.csv
 ├── run_benchmark.py
 ├── analyze_results.py
@@ -156,23 +170,101 @@ LLM-Reasoning-Benchmark/
         └── latency_by_variant.png
 ```
 
-## 11. Reproducing the Analysis
+The `.env` file is excluded from version control to protect API credentials.
+
+## 11. Installation and Setup
+
+### Step 1: Clone the Repository
+
+```bash
+git clone https://github.com/TheToontang/-LLM-Reasoning-Benchmark.git
+cd -LLM-Reasoning-Benchmark
+```
+
+### Step 2: Install Dependencies
+
+Make sure Python is installed, then run:
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+The `requirements.txt` file contains:
+
+```text
+google-genai
+python-dotenv
+matplotlib
+```
+
+### Step 3: Configure the API Key
+
+To run a new benchmark experiment, obtain an API key from Google AI Studio.
+
+Create a `.env` file in the project directory:
+
+```env
+GEMINI_API_KEY=your_api_key_here
+```
+
+Replace `your_api_key_here` with your actual API key.
+
+**Security Note:** Never commit the `.env` file or expose API credentials publicly.
+
+An API key is not required to analyze the existing experimental results.
+
+## 12. Running the Project
+
+### Run the Benchmark
+
+To execute the reasoning benchmark:
+
+```bash
+python run_benchmark.py
+```
+
+The script reads questions from `questions.csv`, sends requests to the configured language model, and saves the results to:
+
+```text
+results/experiment_results.csv
+```
+
+The benchmark supports retry handling and resuming interrupted runs.
+
+**Important:** If an existing results file contains successful responses, the runner may skip those questions. To perform a fresh experiment, first back up the previous results and use a new results file. This is especially important after modifying the dataset, model, or prompt configuration.
+
+Running the benchmark requires valid API credentials and may incur API usage costs.
+
+### Analyze the Results
 
 To reproduce the analysis using the included experimental results:
-
-1. Install Python and Matplotlib.
-2. Run:
 
 ```bash
 python analyze_results.py
 ```
 
-The script prints accuracy and latency summaries and generates the two visualization files in `results/charts/`.
+The analysis script calculates:
 
-Running a new benchmark experiment requires valid API credentials and may incur API usage costs.
+- Overall answer accuracy
+- Accuracy by reasoning category
+- Accuracy by question variant
+- Average, minimum, and maximum API latency
+- Average latency by category and variant
+- The five slowest API responses
 
----
+It also generates two charts:
 
-**Project Type:** Independent Research / Experimental Benchmarking
+```text
+results/charts/latency_by_category.png
+results/charts/latency_by_variant.png
+```
 
-**Research Area:** Large Language Models, Reasoning Evaluation, Prompt Robustness
+The analysis can be reproduced without making additional API requests.
+
+## 13. Conclusion
+
+This project demonstrates a reproducible Python workflow for evaluating language model responses to small-scale reasoning tasks.
+
+The evaluated model achieved 100% accuracy across the 45 prompts in this dataset. However, the limited number and difficulty of the underlying problems prevent broader conclusions about reasoning ability or robustness.
+
+The project provides a foundation for future experiments involving more challenging datasets, additional models, and repeated evaluations.
