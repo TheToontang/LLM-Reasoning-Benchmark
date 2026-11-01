@@ -16,7 +16,7 @@ from google import genai
 
 load_dotenv()
 
-MODEL_ID = "gemini-3.8-flash"  # Keep the model used in the previous run.
+MODEL_ID = "gemini-3.8-flash"
 INPUT_CSV = Path("questions.csv")
 OUTPUT_CSV = Path("results") / "experiment_results.csv"
 
@@ -24,8 +24,6 @@ MAX_ATTEMPTS = 5
 BASE_RETRY_SECONDS = 5
 REQUEST_INTERVAL_SECONDS = 2
 
-# The first six columns intentionally match the benchmark's
-# standardized naming convention. The remaining columns are metadata.
 FIELDNAMES = [
     "Question_ID",
     "Category",
