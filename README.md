@@ -177,8 +177,8 @@ The `.env` file is excluded from version control to protect API credentials.
 ### Step 1: Clone the Repository
 
 ```bash
-git clone https://github.com/TheToontang/-LLM-Reasoning-Benchmark.git
-cd -LLM-Reasoning-Benchmark
+git clone https://github.com/TheToontang/LLM-Reasoning-Benchmark.git
+cd LLM-Reasoning-Benchmark
 ```
 
 ### Step 2: Install Dependencies
